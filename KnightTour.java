@@ -42,8 +42,8 @@ public class KnightTour {
                 default:
                     throw new Exception();
         }
+        System.out.println("The total number of moves is " + moves);
         KnightBoard.printBoard();
-        System.out.println(moves);
 
         } catch (Exception e) {
             usage();

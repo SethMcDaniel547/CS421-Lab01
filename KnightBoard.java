@@ -26,6 +26,10 @@ public class KnightBoard {
 
         for (int i = 0; i < boardSize; i++) {
             for(int j = 0; j < boardSize; j++) {
+                if (board[j][i] < 0) {
+                    System.out.println("No solution found!");
+                    return;
+                }
                 System.out.printf(formatString, board[j][i]);
             }
             System.out.println();
