@@ -2,7 +2,12 @@
 
 //Have the search methods here that are called by the main method
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class KnightTour {
+    //public List<int[]> path = new ArrayList<>();
+    public static int moves = 0;
 
     public static void main(String[] args) {
         if (args.length != 4) {
@@ -19,22 +24,26 @@ public class KnightTour {
             if (n <= 2) {throw new Exception();}
             if (x < 0 || x >=n || y < 0 || y >= n) {throw new Exception();}
 
-                    switch (Integer.parseInt(args[0])) {
-            case 0:
-                noHeuristic();
-                break;
+            KnightBoard.setBoard(n);
 
-            case 1:
-                heuristic1();
-                break;
+            switch (Integer.parseInt(args[0])) {
+                case 0:
+                    basicSearch(x, y, 1);
+                    break;
 
-            case 2:
-                heuristic2();
-                break;
-        
-            default:
-                throw new Exception();
+                case 1:
+                    heuristic1();
+                    break;
+
+                case 2:
+                    heuristic2();
+                    break;
+            
+                default:
+                    throw new Exception();
         }
+        KnightBoard.printBoard();
+        System.out.println(moves);
 
         } catch (Exception e) {
             usage();
@@ -42,16 +51,33 @@ public class KnightTour {
         }
     }
 
-    private static void noHeuristic() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'noHeuristic'");
+    private static boolean basicSearch(int x, int y, int depth) {
+        moves++;
+        KnightBoard.board[x][y] = depth;
+        if (depth == KnightBoard.size()) {
+            return true;
+        }
+
+        List<int[]> nextPosition = Position.getNextPositions(x, y);
+        for (int i = 0; i < nextPosition.size(); i++) {
+            int nextX = nextPosition.get(i)[0];
+            int nextY = nextPosition.get(i)[1];
+            if (KnightBoard.isFree(nextX, nextY)) {
+                if (basicSearch(nextX, nextY, depth + 1)) return true;
+            }
+        }
+
+        KnightBoard.board[x][y] = -1;
+        return false;
+
     }
 
-        private static void heuristic1() {
+    private static void heuristic1() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'heuristic1'");
     }
-        private static void heuristic2() {
+
+    private static void heuristic2() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'heuristic2'");
     }

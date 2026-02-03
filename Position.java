@@ -8,12 +8,12 @@ public class Position {
     public static List<int[]> getNextPositions(int x, int y) {
         List<int[]> nextPositions = new ArrayList<>();
         int[] colOffests = {1, 2, 2, 1, -1, -2, -2, -1};
-        int[] rowOffests = {2, 1, -1, -2, -2, -1, 1, 2};
-        for (int i = 8; i > 0; i--) {
+        int[] rowOffests = {-2, -1, 1, 2, 2, 1, -1, -2};
+        for (int i = 0; i < 8; i++) {
             int nextCol = x + colOffests[i];
             int nextRow = y + rowOffests[i];
 
-            if (nextCol >= 0 && nextCol < KnightBoard.boardSize && nextRow >= 0 && nextRow < KnightBoard.boardSize) {
+            if (nextCol >= 0 && nextCol < KnightBoard.boardSize && nextRow >= 0 && nextRow < KnightBoard.boardSize && KnightBoard.isFree(nextCol, nextRow)) {
                 nextPositions.add(pair(nextCol, nextRow));
             }
         }
