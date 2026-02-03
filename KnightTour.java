@@ -32,11 +32,11 @@ public class KnightTour {
                     break;
 
                 case 1:
-                    heuristic1();
+                    heuristic1(x, y, 1);
                     break;
 
                 case 2:
-                    heuristic2();
+                    heuristic2(x, y, 1);
                     break;
             
                 default:
@@ -72,14 +72,59 @@ public class KnightTour {
 
     }
 
-    private static void heuristic1() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'heuristic1'");
+    private static boolean heuristic1(int x, int y, int depth) {
+        moves++;
+        KnightBoard.board[x][y] = depth;
+        if (depth == KnightBoard.size()) {
+            return true;
+        }
+
+        List<int[]> moves = Position.getNextPositions(x, y);
+
+        moves.sort((a, b) -> {
+            int distA = KnightBoard.getBorderDistance(a[0], a[1]);
+            int distB = KnightBoard.getBorderDistance(b[0], b[1]);
+
+            if (distA != distB) {
+                return Integer.compare(distA, distB);
+            }
+            return 0;
+        });
+
+        for (int i = 0; i < moves.size(); i++) {
+            if (heuristic1(moves.get(i)[0], moves.get(i)[1], depth + 1)) return true;
+        }
+
+        KnightBoard.board[x][y] = -1;
+        return false;
+
     }
 
-    private static void heuristic2() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'heuristic2'");
+    private static boolean heuristic2(int x, int y, int depth) {
+        moves++;
+        KnightBoard.board[x][y] = depth;
+        if (depth == KnightBoard.size()) {
+            return true;
+        }
+
+        List<int[]> moves = Position.getNextPositions(x, y);
+
+        moves.sort((a, b) -> {
+            List<int[]> posA = Position.getNextPositions(a[0], a[1]);
+            List<int[]> posB = Position.getNextPositions(b[0], b[1]);
+
+            if (posA.size() != posB.size()) {
+                return Integer.compare(posA.size(), posB.size());
+            }
+            return 0;
+        });
+
+        for (int i = 0; i < moves.size(); i++) {
+            if (heuristic2(moves.get(i)[0], moves.get(i)[1], depth + 1)) return true;
+        }
+
+        KnightBoard.board[x][y] = -1;
+        return false;
     }
 
     public static void usage() {
